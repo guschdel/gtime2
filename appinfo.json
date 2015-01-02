@@ -1,0 +1,48 @@
+{
+    "appKeys": {
+        "KEY_UPDATE_WEATHER": 3
+    },
+    "capabilities": [
+        "location"
+    ],
+    "companyName": "guschdel soft",
+    "longName": "gTime2 Watchface",
+    "projectType": "native",
+    "resources": {
+        "media": [
+            {
+                "file": "images/icon.png",
+                "menuIcon": true,
+                "name": "IMG_MENU_ICON",
+                "type": "png"
+            },
+            {
+                "file": "images/arrow_up.png",
+                "name": "IMG_ARROW_UP",
+                "type": "png"
+            },
+            {
+                "file": "images/arrow_down.png",
+                "name": "IMG_ARROW_DOWN",
+                "type": "png"
+            },
+            {
+                "file": "images/bt_con.png",
+                "name": "IMG_BT_CON",
+                "type": "png"
+            },
+            {
+                "file": "images/bt_con_dis.png",
+                "name": "IMG_BT_DIS",
+                "type": "png"
+            }
+        ]
+    },
+    "shortName": "gTime2",
+    "uuid": "cf727ee6-24a2-4860-a92c-c9a5befed85d",
+    "versionCode": 1,
+    "versionLabel": "2.0",
+    "watchapp": {
+        "watchface": true
+    }
+}
