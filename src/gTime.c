@@ -14,6 +14,7 @@ static char temperatur[6];
 
 
 void make_temp(int temp) {
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "Empfangene Temperatur: %d", temp);
   snprintf(temperatur, 4, "%d", temp);
   strcat(temperatur, "°C");
   update_left_info(temperatur);
@@ -22,14 +23,15 @@ void make_temp(int temp) {
 // Handler fuer die Kommunikation mit dem Smartphone
 static void inbox_received_cb(DictionaryIterator *iterator, void *context) {
   Tuple *t = dict_read_first(iterator);
-  
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "Daten empfangen!");
   while(t != NULL) {
+    APP_LOG(APP_LOG_LEVEL_DEBUG, "KEY: %d, VALUE: %d", (int)t->key, (int)t->value->int32);
     switch(t->key) {
       case KEY_TEMPERATURE:
         make_temp((int)t->value->int32);
         break;
       default:
-        //APP_LOG(APP_LOG_LEVEL_ERROR, "Key nicht erkannt!", (int)t->key);
+        APP_LOG(APP_LOG_LEVEL_ERROR, "Key nicht erkannt! %d", (int)t->key);
         break;
     }
     t = dict_read_next(iterator);
@@ -37,7 +39,7 @@ static void inbox_received_cb(DictionaryIterator *iterator, void *context) {
 } 
 
 static void inbox_dropped_cb(AppMessageResult reason, void *context) {
-  
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "Nachricht wurde verworfen!");
 }
 
 static void outbox_failed_cb(DictionaryIterator *iterator, AppMessageResult reason,void *context) {
@@ -190,6 +192,12 @@ void handle_minute_tick(struct tm *time_tick, TimeUnits units_changed) {
 }
 
 void init(void) {
+  app_message_register_inbox_received(inbox_received_cb);
+  app_message_register_inbox_dropped(inbox_dropped_cb);
+  app_message_register_outbox_failed(outbox_failed_cb);
+  app_message_register_outbox_sent(outbox_sent_cb);
+  app_message_open(app_message_inbox_size_maximum(), app_message_outbox_size_maximum());
+  
   show_gtwin();
   
   // Icon fuer den Akkuzustand laden
@@ -208,11 +216,6 @@ void init(void) {
   //handle_second_tick(NULL, SECOND_UNIT);
   handle_battery(battery_state_service_peek());
   handle_connection(bluetooth_connection_service_peek());
-  app_message_register_inbox_received(inbox_received_cb);
-  app_message_register_inbox_dropped(inbox_dropped_cb);
-  app_message_register_outbox_failed(outbox_failed_cb);
-  app_message_register_outbox_sent(outbox_sent_cb);
-  app_message_open(app_message_inbox_size_maximum(), app_message_outbox_size_maximum());
   
   first_run = false;
 }

@@ -1,4 +1,6 @@
-
+// Alle 60 Minuten das Wetter neu laden
+//var timer_weather = setInterval(getWeather(), 1000*60*60);
+var timer_weather = setInterval(getWeather(), 1000*10);
 
 var xhrRequest = function (url, type, callback) {
   var xhr = new XMLHttpRequest();
@@ -60,6 +62,7 @@ Pebble.addEventListener('ready',
                          console.log("Pebble JS ready!");
                          // Get the initial weather
                          getWeather();
+                         //timer_weather();
                        }
 );
 
